@@ -1,0 +1,158 @@
+﻿@using EntityLayer.Concrete
+@model List<Transaction>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            <!-- KPI Kutuları -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <p>Toplam Gelir</p>
+                            <h3>@ViewBag.TotalIncome ₺</h3>
+                        </div>
+                        <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                        <a href="/Income" class="small-box-footer">Detaylı Gör <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <p>Toplam Gider</p>
+                            <h3>@ViewBag.TotalExpense ₺</h3>
+                        </div>
+                        <div class="icon"><i class="fas fa-arrow-down"></i></div>
+                        <a href="/Expense" class="small-box-footer">Detaylı Gör <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <p>Net Bakiye</p>
+                            <h3>@ViewBag.NetBalance ₺</h3>
+                        </div>
+                        <div class="icon"><i class="fas fa-balance-scale"></i></div>
+                        <a href="/Reports" class="small-box-footer">Detaylı Gör <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+							<p>Tanımlı Bankalar</p>
+							<h2>@ViewBag.countBank</h2>
+							@*  @foreach(var item in Model)
+                            {
+                                <h2>@item.Bank.BankName</h2>
+                                
+                            } *@
+                           
+                        </div>
+                        <div class="icon"><i class="fas fa-university"></i></div>
+                        <a href="/Banks" class="small-box-footer">Detaylı Gör <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gelir / Gider Chart -->
+            <div class="row">
+                <section class="col-lg-8 connectedSortable">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-chart-line mr-1"></i> Aylık Gelir / Gider</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="incomeExpenseChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Son İşlemler -->
+                <section class="col-lg-4 connectedSortable">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-receipt mr-1"></i> Son İşlemler</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tarih</th>
+                                        <th>Açıklama</th>
+                                        <th>Tutar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.LastTransactions)
+                                    {
+                                        <tr>
+                                            <td>@item.CreatedAt</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.Amount ₺</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('incomeExpenseChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.Months)),
+                datasets: [
+                    {
+                        label: 'Gelir',
+                        backgroundColor: 'rgba(40,167,69,0.2)',
+                        borderColor: 'rgba(40,167,69,1)',
+                        data: @Html.Raw(Json.Serialize(ViewBag.MonthlyIncome))
+                            },
+                    {
+                        label: 'Gider',
+                        backgroundColor: 'rgba(220,53,69,0.2)',
+                        borderColor: 'rgba(220,53,69,1)',
+                        data: @Html.Raw(Json.Serialize(ViewBag.MonthlyExpense))
+                            }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    </script>
+}

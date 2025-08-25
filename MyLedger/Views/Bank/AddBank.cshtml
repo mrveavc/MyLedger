@@ -1,0 +1,67 @@
+﻿@model EntityLayer.Concrete.Bank
+
+@{
+    ViewData["Title"] = "AddBank";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+   <form class="form-group"  method="post" >
+
+    <div class="wrapper">     
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Banka Ekle</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="BankName">Banka Adı</label>
+                                    <input type="text" asp-for="BankName" id="BankName" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="AccountNumber">Hesap Numarası</label>
+                                    <input asp-for="AccountNumber"
+                                           id="AccountNumber"
+                                           class="form-control"
+                                           placeholder="24 haneli hesap numarası giriniz" />
+                                    <span class="text-danger" asp-validation-for="AccountNumber"></span>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="LedgerId">Ledger Seç</label>
+                                    <select id="LedgerId" name="LedgerId" class="form-control" asp-items="ViewBag.lv">
+                                        <option value="">Seçiniz...</option>
+                                    </select>
+                                </div>
+                             
+                                <div class="form-group">
+                                    <label for="Balance">Bakiye</label>
+                                    <input type="text" asp-for="Balance" id="Balance" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <a href="/Bank/Index" class="btn btn-secondary">Geri Dön</a>
+                        <button type="submit" class="btn btn-success  float-right">Ekle</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+      
+
+    </div>
+</form>
+

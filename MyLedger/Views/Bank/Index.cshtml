@@ -1,0 +1,110 @@
+﻿@using EntityLayer.Concrete
+@model List<Bank>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+
+<div class="wrapper">
+   
+    <div class="content-wrapper">
+       
+        <section class="content-header">
+            <div class="container-fluid">
+             
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Fixed Header Table</h3>
+
+                                <div class="card-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Banka Adı</th>
+                                            <th>Hesap Numarası</th>
+                                            <th>Bakiye</th>
+                                            <th>Kayıtlı Olduğu Defter</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach(var item in Model)
+                                        {
+                                            <tr>
+                                            <td>@item.Id</td>
+                                            <td>@item.BankName</td>
+                                            <td>@item.AccountNumber</td>
+                                            <td>@item.Balance</td>
+                                            <td>@item.Ledger.Name</td>
+                                             <td>
+                                               <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#Sil_@item.Id">
+                                                   Sil
+                                                </button>
+                                              </td>
+                                            <td><a href="/Bank/EditBank/@item.Id" class="btn btn-danger">Düzenle</a></td>
+                                        </tr>
+
+                                            <div class="modal fade" id="Sil_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Blog Sil</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Bankayı silmek istiyor musunuz?</h4>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-info mx-4" data-dismiss="modal">Vazgeç</button>
+                                                            @Html.ActionLink("Sil", "DeleteBank", new { id = @item.Id }, new { @class = "btn btn-danger mx-4" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        
+                                       
+                                        
+                                    </tbody>
+                                   
+                                </table>
+                            </div>
+
+                            <a href="/Bank/AddBank/" class="btn btn-success">Banka Ekle</a>
+
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </section>
+       
+    </div>
+   
+
+   
+</div>
+<script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/adminlte/dist/js/adminlte.min.js"></script>
+@* <script src="../../dist/js/demo.js"></script> *@
