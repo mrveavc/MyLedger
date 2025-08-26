@@ -9,5 +9,6 @@ namespace BusinessLayer.Abstract
 {
     public interface ILedgerMemberService :IGenericService<LedgerMember>
     {
+        List<LedgerMember> GetLedgerMemberListWithLedgerUser(int id);
     }
 }

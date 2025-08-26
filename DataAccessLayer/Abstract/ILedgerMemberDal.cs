@@ -9,5 +9,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface ILedgerMemberDal :IGenericDal<LedgerMember>
     {
+        List<LedgerMember> GetListWithLedgerUser(int id);
     }
 }

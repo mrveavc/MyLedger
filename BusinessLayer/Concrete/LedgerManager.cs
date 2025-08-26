@@ -4,15 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete
 {
     public class LedgerManager : ILedgerService
     {
+        ILedgerDal _ledgerDal;
+
+        public LedgerManager(ILedgerDal ledgerDal)
+        {
+            _ledgerDal = ledgerDal;
+        }
+
         public List<Ledger> GetList()
         {
-            throw new NotImplementedException();
+            return _ledgerDal.GetListAll();
+        }
+
+        public List<Ledger> GetListWithLedgerName(int id)
+        {
+            return _ledgerDal.GetListWithLedger(id);
         }
 
         public void TAdd(Ledger t)
@@ -27,7 +40,7 @@ namespace BusinessLayer.Concrete
 
         public Ledger TGetById(int id)
         {
-            throw new NotImplementedException();
+            return _ledgerDal.GetById(id);
         }
 
         public void TUpdate(Ledger t)

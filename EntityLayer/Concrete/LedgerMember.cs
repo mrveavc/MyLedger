@@ -12,7 +12,7 @@ namespace EntityLayer.Concrete
         public int LedgerId { get; set; }
         public int UserId { get; set; }
 
-        public string Role { get; set; } = "Viewer"; 
+        public string Role { get; set; } = "Member"; 
         public string? Permissions { get; set; } 
 
         // Navigation
