@@ -18,8 +18,17 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return c.Transactions.Include(b => b.Bank).Where(x => x.CreatedBy == id).ToList(); 
+                return c.Transactions.Include(b => b.Bank).Where(x => x.CreatedBy == id).ToList();
             }
+
+        }
+		public List<Transaction> GetListWithLedgerBank(int id)
+        {
+            using (var c = new Context())
+            {
+                return c.Transactions.Include(b => b.Bank).Include(c=>c.Ledger).Where(x => x.CreatedBy == id).ToList();
+            }
+
 
         }
 

@@ -11,5 +11,6 @@ namespace DataAccessLayer.Abstract
     public interface ITransactionDal :IGenericDal<Transaction>
     {
         List<Transaction> GetListWithBank(int id);
+        List<Transaction> GetListWithLedgerBank(int id);
     }
 }

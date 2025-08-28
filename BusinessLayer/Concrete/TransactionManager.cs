@@ -21,32 +21,36 @@ namespace BusinessLayer.Concrete
 
         public List<Transaction> GetList()
         {
-            throw new NotImplementedException();
+            return _transactionDal.GetListAll();
         }
 
         public void TAdd(Transaction t)
         {
-            throw new NotImplementedException();
+            _transactionDal.Insert(t);
         }
 
         public void TDelete(Transaction t)
         {
-            throw new NotImplementedException();
+            _transactionDal.Delete(t);
         }
 
         public Transaction TGetById(int id)
         {
-            throw new NotImplementedException();
+            return _transactionDal.GetById(id);
         }
 
         public void TUpdate(Transaction t)
         {
-            throw new NotImplementedException();
+            _transactionDal.Update(t);
         }
         public List<Transaction> GetTransactionListWithBank(int id)
         {
             return _transactionDal.GetListWithBank(id);
         }
 
-    }
+		public List<Transaction> GetTransactionListWithLedgerBank(int id)
+		{
+            return _transactionDal.GetListWithLedgerBank(id);
+		}
+	}
 }

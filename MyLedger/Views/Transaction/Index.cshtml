@@ -1,0 +1,75 @@
+﻿@using EntityLayer.Concrete
+@model List<Transaction>
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="wrapper">
+
+	<div class="content-wrapper">
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1 class="card-title">Gelir/Gider Tablosu</h1>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th>Defter</th>
+											<th>Banka</th>
+											<th>Miktar</th>
+											<th>Gelir/Gider</th>
+											<th>Kategori</th>
+											<th>Açıklama</th>
+											<th>Ay</th>
+											<th>Yıl</th>
+											<th>İşlem Sahibi</th>
+											<th>İşlem Tarihi</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (var item in Model)
+										{
+											<tr>
+												<td>@item.Ledger.Name</td>
+												<td>@item.Bank.BankName</td>
+												<td>@(item.Amount.ToString("C", new System.Globalization.CultureInfo("tr-TR")))</td>
+
+												@if (@item.Type=="Income")
+												{
+													<td class="text-green"> <i class="fa fa-level-up" style="color:green"></i> Gelir </td>
+												}
+												else
+												{
+													<td class="text-red"> <i class="fa fa-level-down" style="color:red"></i> Gider </td>
+												}												
+												<td>@item.Category</td>
+												<td>@item.Description</td>
+												<td>@(new System.Globalization.CultureInfo("tr-TR").DateTimeFormat.GetMonthName(item.Month))</td>
+												<td>@item.Year</td>
+												<td>@ViewBag.OwnerName </td>
+												<td>@item.CreatedAt.ToLongDateString()</td>
+											</tr>
+										}
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	
+</div>
