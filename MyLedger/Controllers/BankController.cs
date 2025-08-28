@@ -18,7 +18,6 @@ namespace MyLedger.Controllers
         {
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            //var ledger=c.Ledgers.Where(x=>x.UserId==userId).Select(y=>y.Id).ToList();
             var values = bm.GetBankListWithLedger(userId);
 
             return View(values);
@@ -28,10 +27,9 @@ namespace MyLedger.Controllers
         {
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            //var ledger=c.Ledgers.Where(x=>x.UserId==userId).Select(y=>y.Id).ToList();
             var values = bm.GetBankListWithLedger(userId);
          
-            List<SelectListItem> ledgervalues = values //aynı olan ledger nameleri getirmiyor.
+            List<SelectListItem> ledgervalues = values 
                 .DistinctBy(x => x.Ledger.Id)
                 .Select(x => new SelectListItem
                 {
@@ -72,10 +70,9 @@ namespace MyLedger.Controllers
             var bankvalue=bm.TGetById(id);
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            //var ledger=c.Ledgers.Where(x=>x.UserId==userId).Select(y=>y.Id).ToList();
             var values = bm.GetBankListWithLedger(userId);
 
-            List<SelectListItem> ledgervalues = values //aynı olan ledger nameleri getirmiyor.
+            List<SelectListItem> ledgervalues = values 
                 .DistinctBy(x => x.Ledger.Id)
                 .Select(x => new SelectListItem
                 {

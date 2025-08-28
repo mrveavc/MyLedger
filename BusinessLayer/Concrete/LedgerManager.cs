@@ -30,12 +30,12 @@ namespace BusinessLayer.Concrete
 
         public void TAdd(Ledger t)
         {
-            throw new NotImplementedException();
+           _ledgerDal.Insert(t);
         }
 
         public void TDelete(Ledger t)
         {
-            throw new NotImplementedException();
+            _ledgerDal.Delete(t);
         }
 
         public Ledger TGetById(int id)
@@ -45,7 +45,7 @@ namespace BusinessLayer.Concrete
 
         public void TUpdate(Ledger t)
         {
-            throw new NotImplementedException();
+            _ledgerDal.Update(t);
         }
     }
 }

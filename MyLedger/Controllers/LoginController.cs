@@ -1,10 +1,13 @@
 ﻿using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyLedger.Models;
 
 namespace MyLedger.Controllers
 {
+    
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -39,6 +42,16 @@ namespace MyLedger.Controllers
             return View();
 
 
+        }
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Login");
+        }
+        public IActionResult AccessDenied()
+        {
+
+            return View();
         }
     }
 }

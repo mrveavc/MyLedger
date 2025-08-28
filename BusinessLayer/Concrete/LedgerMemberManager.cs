@@ -35,7 +35,7 @@ namespace BusinessLayer.Concrete
 
         public void TDelete(LedgerMember t)
         {
-            throw new NotImplementedException();
+            _LedgerMemberDal.Delete(t);
         }
 
         public LedgerMember TGetById(int id)
@@ -45,7 +45,7 @@ namespace BusinessLayer.Concrete
 
         public void TUpdate(LedgerMember t)
         {
-            throw new NotImplementedException();
+            _LedgerMemberDal.Update(t);
         }
     }
 }

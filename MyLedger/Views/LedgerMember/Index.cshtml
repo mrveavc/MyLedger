@@ -76,7 +76,7 @@
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Sil_@item.Id">
                                             Sil
                                         </button>
-                                        <a href="/LedgerMember/EditLedgerMember/@item.Id" class="btn btn-danger">Düzenle</a>
+                                        <a href="/LedgerMember/EditMember/@item.Id" class="btn btn-danger">Düzenle</a>
                                     
                                     </td>
                                     
@@ -95,7 +95,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-info mx-4" data-dismiss="modal">Vazgeç</button>
-                                                @Html.ActionLink("Sil", "DeleteLedgerMember", new { id = @item.Id }, new { @class = "btn btn-danger mx-4" })
+                                                @Html.ActionLink("Sil", "DeleteMember", new { id = @item.Id ,@item.UserId}, new { @class = "btn btn-danger mx-4" })
                                             </div>
                                         </div>
                                     </div>

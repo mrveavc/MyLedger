@@ -35,23 +35,73 @@
                         </p>
                     </a>
                 </li>
-                @* Sadece Admin görebilir *@
-                @*  <li class="nav-item">
-                <a href="pages/widgets.html" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                Sistem Yönetimi
-                </p>
-                </a>
+                @* @if (!(ViewBag.IsMember as bool? ?? true) || User.IsInRole("Admin")) *@
+                @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+                {
+                     <li class="nav-item">
+                    <a href="/Ledger/Index" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Defterlerim
+                        </p>
+                    </a>
                 </li>
+                }
+               @*  @if ((ViewBag.IsMember as bool? ?? false))
+                {
+
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Kayıtlı Olduğum Defterler
+                            </p>
+                        </a>
+                    </li>
+                } *@
+                @if (User.IsInRole("Member")){
                 <li class="nav-item">
-                <a href="pages/widgets.html" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                Tüm Ledger’lar
-                </p>
-                </a>
-                </li> *@
+                        <a href="/Ledger/MyLedgers/" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Kayıtlı Olduğum Defterler
+                        </p>
+                    </a>
+                </li>
+                }
+                @* @if (ViewBag.UserRoles.Contains("Admin")) *@
+                
+                @if (User.IsInRole("Admin"))
+                {
+                    @* Sadece Admin görebilir *@
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Sistem Yönetimi
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pages/widgets.html" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Tüm Ledger’lar
+                            </p>
+                        </a>
+                    </li>
+                }
+                @* Sadece üye olduğu Ledger gösterilsin *@
+              @*  @if (ViewBag.LedgerMembership.Contains(3))  
+                {
+                    <li class="nav-item">
+                        <a href="/Ledger/Index" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>Ledger 1</p>
+                        </a>
+                    </li>
+                }*@
                 <li class="nav-item">
                     <a href="/Bank/Index" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -68,6 +118,9 @@
                         </p>
                     </a>
                 </li>
+               @if (!(ViewBag.IsMember as bool? ?? false)){
+   
+
                 <li class="nav-item">
                     <a href="/LedgerMember/Index" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -76,6 +129,7 @@
                         </p>
                     </a>
                 </li>
+                    }
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -136,6 +190,14 @@
                         </li>
 
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="/Login/LogOut" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Çıkış
+                        </p>
+                    </a>
                 </li>
 
 

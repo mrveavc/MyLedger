@@ -1,0 +1,57 @@
+﻿@using EntityLayer.Concrete
+@model List<Ledger>
+@{
+    ViewData["Title"] = "MyLedgers";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+
+<div class="wrapper">
+
+	<div class="content-wrapper">
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="d-flex justify-content-end mb-3">
+					<a href="/Ledger/AddLedger/" class="btn btn-success">Yeni Defter Ekle</a>
+				</div>
+				<div class="row">
+
+					@foreach (var item in Model)
+					{
+						<div class="col-lg-6 ">
+							<div class="small-box bg-warning">
+								<div class="inner">
+									<h3>@item.Name</h3>
+
+									<p>
+										<span class="info-box-icon">
+											<i class="fas fa-pen"></i>
+
+
+										</span>
+										Oluşturan : @ViewBag.Owners[item.UserId]
+									</p>
+									<p>
+										<span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+										Oluşturulma Tarihi: @item.CreatedAt.ToLongDateString()
+									</p>
+								</div>
+								<div class="icon">
+									<i class="fa fa-book"></i>
+
+								</div>
+								
+							</div>
+
+						</div>
+						
+					}
+
+				</div>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+
