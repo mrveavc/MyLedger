@@ -18,10 +18,10 @@ namespace BusinessLayer.Concrete
             _bankDal = bankDal;
         }
 
-        public List<Bank> GetBankListWithLedger(int id)
-        {
-           return  _bankDal.GetListWithLedger(id);
-        }
+        //public List<Bank> GetBankListWithLedger(int id)
+        //{
+        //   return  _bankDal.GetListWithLedger(id);
+        //}
 
         public List<Bank> GetList()
         {

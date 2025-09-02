@@ -61,10 +61,37 @@
 												<td>@item.Year</td>
 												<td>@ViewBag.OwnerName </td>
 												<td>@item.CreatedAt.ToLongDateString()</td>
+												<td>
+													<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#Sil_@item.Id">
+														Sil
+													</button>
+												</td>
+												<td><a href="/Transaction/EditTransaction/@item.Id" class="btn btn-danger">Düzenle</a></td>
 											</tr>
+											<div class="modal fade" id="Sil_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+												<div class="modal-dialog modal-dialog-centered" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h5 class="modal-title" id="exampleModalLongTitle">İşlemi Sil</h5>
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																<span aria-hidden="true">&times;</span>
+															</button>
+														</div>
+														<div class="modal-body">
+															<h4>İşlemi silmek istiyor musunuz?</h4>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-info mx-4" data-dismiss="modal">Vazgeç</button>
+															@Html.ActionLink("Sil", "DeleteTransaction", new { id = @item.Id }, new { @class = "btn btn-danger mx-4" })
+														</div>
+													</div>
+												</div>
+											</div>
 										}
 								</table>
+
 							</div>
+							<a href="/Transaction/AddTransaction/" class="btn btn-success">İşlem Oluştur</a>
 						</div>
 					</div>
 				</div>

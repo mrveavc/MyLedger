@@ -42,7 +42,7 @@
                                             <th>Banka Adı</th>
                                             <th>Hesap Numarası</th>
                                             <th>Bakiye</th>
-                                            <th>Kayıtlı Olduğu Defter</th>
+                                            @* <th>Kayıtlı Olduğu Defter</th> *@
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -53,7 +53,7 @@
                                             <td>@item.BankName</td>
                                             <td>@item.AccountNumber</td>
                                             <td>@item.Balance</td>
-                                            <td>@item.Ledger.Name</td>
+                                            @* <td>@item.Ledger.Name</td> *@
                                              <td>
                                                <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#Sil_@item.Id">
                                                    Sil

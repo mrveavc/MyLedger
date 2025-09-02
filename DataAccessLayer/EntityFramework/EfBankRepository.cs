@@ -13,22 +13,22 @@ namespace DataAccessLayer.EntityFramework
 {
     public class EfBankRepository :GenericRepository<Bank>, IBankDal
     {
-        public List<Bank> GetListWithLedger(int id)
-        {
-            using (var c=new Context())
-            {
-                var ledgerIds = c.Ledgers
-                 .Where(x => x.UserId == id)
-                 .Select(y => y.Id)
-                 .ToList();
+        //public List<Bank> GetListWithLedger(int id)
+        //{
+        //    using (var c=new Context())
+        //    {
+        //        var ledgerIds = c.Ledgers
+        //         .Where(x => x.UserId == id)
+        //         .Select(y => y.Id)
+        //         .ToList();
 
-                var banks = c.Banks
-                             .Include(x => x.Ledger)
-                             .Where(y => ledgerIds.Contains(y.LedgerId))
-                             .ToList();
+        //        var banks = c.Banks
+        //                     .Include(x => x.Ledger)
+        //                     .Where(y => ledgerIds.Contains(y.LedgerId))
+        //                     .ToList();
 
-                return banks;
-            }
-        }
+        //        return banks;
+        //    }
+        //}
     }
 }

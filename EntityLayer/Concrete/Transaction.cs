@@ -9,7 +9,7 @@ namespace EntityLayer.Concrete
     public class Transaction
     {
         public int Id { get; set; }
-        public int LedgerId { get; set; }
+        public int? LedgerId { get; set; }
         public int? BankId { get; set; }
         public decimal Amount { get; set; }
         public string Type { get; set; } // Income / Expense /gelir-gider

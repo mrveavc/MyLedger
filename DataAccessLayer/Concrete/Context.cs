@@ -38,12 +38,6 @@ namespace DataAccessLayer.Concrete
                 .HasForeignKey(lm => lm.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Bank -> Ledger
-            modelBuilder.Entity<Bank>()
-                .HasOne(b => b.Ledger)
-                .WithMany(l => l.Banks)
-                .HasForeignKey(b => b.LedgerId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Bank>()
                .Property(b => b.Balance)

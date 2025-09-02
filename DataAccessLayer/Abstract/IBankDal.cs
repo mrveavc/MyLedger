@@ -9,6 +9,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface IBankDal :IGenericDal<Bank>
     {
-        List<Bank> GetListWithLedger(int id);
+        //List<Bank> GetListWithLedger(int id);
     }
 }

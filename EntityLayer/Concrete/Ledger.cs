@@ -16,7 +16,7 @@ namespace EntityLayer.Concrete
      
         public AppUser User { get; set; }
         public ICollection<LedgerMember> LedgerMembers { get; set; }
-        public ICollection<Bank> Banks { get; set; }
+        //public ICollection<Bank> Banks { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

@@ -1,0 +1,101 @@
+﻿@model EntityLayer.Concrete.Transaction
+@{
+	ViewData["Title"] = "AddTransaction";
+	Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+
+<form class="form-group" method="post">
+
+	<div class="wrapper">
+		<div class="content-wrapper">
+			<section class="content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card card-primary">
+							<div class="card-header">
+								<h3 class="card-title">İşlem Oluştur</h3>
+
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="form-group">
+									<label for="LedgerId">Defter Seç</label>
+									<select id="LedgerId" name="LedgerId" class="form-control" asp-items="ViewBag.lv ">
+										<option value="">Seçiniz...</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="BankId">Banka Seç</label>
+									<select id="BankId" name="BankId" class="form-control" asp-items="ViewBag.bank">
+										<option value="">Seçiniz...</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="Amount">Miktar</label>
+									<input type="text" asp-for="Amount" id="Amount" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="Type">Tip Seç</label>
+									<select id="Type" name="Type" class="form-control" asp-items="ViewBag.TypeList">
+										<option value="">Seçiniz...</option>
+									</select>
+								</div>
+
+								<div class="form-group">
+									<label for="Category">Kategori</label>
+									<input type="text" asp-for="Category" id="Category" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="Description">Açıklama</label>
+									<input type="text" asp-for="Description" id="Description" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="Month">Ay</label>
+									<select id="Month" name="Month" class="form-control" asp-items="ViewBag.months">
+										<option value="">Seçiniz...</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="Year">Yıl</label>
+									<select id="Year" name="Year" class="form-control" readonly>
+										<option value="@DateTime.Now.Year" selected>@DateTime.Now.Year</option>
+									</select>
+								</div>
+								<input type="hidden" asp-for="CreatedBy" value="@ViewBag.OwnerId" />
+								<div class="form-group">
+									<label for="CreatedBy">İşlem Sahibi</label>
+									<input type="text" asp-for="CreatedBy" id="CreatedBy" class="form-control" value="@ViewBag.OwnerName" readonly />
+								</div>
+								<div class="form-group">
+									<label for="CreatedAt">İşlem Tarihi</label>
+									<input type="text" asp-for="CreatedAt" id="CreatedAt" class="form-control" value="@DateTime.Now" readonly />
+								</div>
+								
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<a href="/Bank/Index" class="btn btn-secondary">Geri Dön</a>
+						<button type="submit" class="btn btn-success  float-right">Ekle</button>
+					</div>
+				</div>
+			</section>
+		</div>
+
+
+
+	</div>
+</form>
+
+

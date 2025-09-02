@@ -41,9 +41,9 @@ namespace MyLedger.Controllers
             //              .ToList();
             //var values = tm.GetTransactionListWithBank(userId);
 
-            var valuess = bm.GetBankListWithLedger(userId);
-            var countBank = valuess.Count();
-            ViewBag.countBank = countBank;
+            //var valuess = bm.GetBankListWithLedger(userId);
+            //var countBank = valuess.Count();
+            //ViewBag.countBank = countBank;
 
             var lastTransactions = await c.Transactions.Where(x =>x.CreatedBy == userId).OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new
             {

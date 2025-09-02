@@ -10,6 +10,6 @@ namespace BusinessLayer.Abstract
 {
     public interface IBankService :IGenericService<Bank>
     {
-        List<Bank> GetBankListWithLedger(int id);
+        //List<Bank> GetBankListWithLedger(int id);
     }
 }

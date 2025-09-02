@@ -18,8 +18,10 @@ namespace MyLedger.Controllers
         {
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            var values = bm.GetBankListWithLedger(userId);
+            //var values = bm.GetBankListWithLedger(userId);
+            var values = bm.GetList();
 
+            //return View(values);
             return View(values);
         }
         [HttpGet]
@@ -27,17 +29,17 @@ namespace MyLedger.Controllers
         {
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            var values = bm.GetBankListWithLedger(userId);
+            //var values = bm.GetBankListWithLedger(userId);
          
-            List<SelectListItem> ledgervalues = values 
-                .DistinctBy(x => x.Ledger.Id)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Ledger.Name,
-                    Value = x.Ledger.Id.ToString()
-                })
-                .ToList();
-            ViewBag.lv = ledgervalues;
+            //List<SelectListItem> ledgervalues = values 
+            //    .DistinctBy(x => x.Ledger.Id)
+            //    .Select(x => new SelectListItem
+            //    {
+            //        Text = x.Ledger.Name,
+            //        Value = x.Ledger.Id.ToString()
+            //    })
+            //    .ToList();
+            //ViewBag.lv = ledgervalues;
             return View();
         }
         [HttpPost]
@@ -45,7 +47,7 @@ namespace MyLedger.Controllers
         {
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            var values = bm.GetBankListWithLedger(userId);
+            //var values = bm.GetBankListWithLedger(userId);
             BankValidator bv=new BankValidator();
             ValidationResult result=bv.Validate(p);
            
@@ -70,31 +72,48 @@ namespace MyLedger.Controllers
             var bankvalue=bm.TGetById(id);
             var userName = User.Identity.Name;
             var userId = c.Users.Where(x => x.UserName == userName).Select(y => y.Id).FirstOrDefault();
-            var values = bm.GetBankListWithLedger(userId);
+			bankvalue.AccountNumber= bankvalue.AccountNumber.Substring(2);
+            //var values = bm.GetBankListWithLedger(userId);
 
-            List<SelectListItem> ledgervalues = values 
-                .DistinctBy(x => x.Ledger.Id)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Ledger.Name,
-                    Value = x.Ledger.Id.ToString()
-                })
-                .ToList();
-            ViewBag.lv = ledgervalues;
+            //List<SelectListItem> ledgervalues = values 
+            //    .DistinctBy(x => x.Ledger.Id)
+            //    .Select(x => new SelectListItem
+            //    {
+            //        Text = x.Ledger.Name,
+            //        Value = x.Ledger.Id.ToString()
+            //    })
+            //    .ToList();
+            //ViewBag.lv = ledgervalues;
             return View(bankvalue);
         }
         [HttpPost]
         public IActionResult EditBank(Bank p)
         {
-            var bankvalue= bm.TGetById(p.Id);
-            bankvalue.Id = p.Id;
-            bankvalue.AccountNumber = p.AccountNumber;
+            var bankvalue = bm.TGetById(p.Id);
+			BankValidator bv = new BankValidator();			
+            //var IbanWithoutTR = p.AccountNumber.Substring(2);
+			ValidationResult result = bv.Validate(p);
+            if (result.IsValid)
+            {
+             bankvalue.Id = p.Id;
+			bankvalue.AccountNumber = p.AccountNumber;
             bankvalue.BankName = p.BankName;
             bankvalue.Balance = p.Balance;
-            bankvalue.LedgerId = p.LedgerId;
-            bm.TUpdate(p);
-            return RedirectToAction("Index"); 
-        }
+             p.AccountNumber = "TR" + p.AccountNumber;
+			//bankvalue.LedgerId = p.LedgerId;
+			bm.TUpdate(p);
+            return RedirectToAction("Index");  
+            }
+            else
+            {
+				foreach (var item in result.Errors)
+				{
+					ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+
+				}
+			}
+			return View();
+		}
         public IActionResult DeleteBank(int id)
         {
             var bankvalue=bm.TGetById(id);
