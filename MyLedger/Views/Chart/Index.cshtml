@@ -1,0 +1,227 @@
+﻿@* @model EntityLayer.Concrete.Transaction
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/UserLayout.cshtml";
+
+}
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card-tools">
+						<div class="form-group">
+							<label for="Year">Banka Seç</label>
+							<select id="Year" name="Year" class="form-control" asp-items="ViewBag.yearValues">
+								<option value="">Seçiniz...</option>
+							</select>
+						</div>
+						
+					</div>
+					<div class="card card-success">
+						<div class="card-header">
+							<h3 class="card-title">Bar Chart</h3>
+
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="chart">
+								<canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+							</div>
+						</div>
+						<!-- /.card-body -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+	var barChartCanvas = $('#barChart').get(0).getContext('2d')
+
+	// Varsayılan veri
+	var areaChartData = {
+		labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs'], // Örnek aylar
+		datasets: [
+			{
+				label: '2020',
+				data: [10, 20, 30, 40, 50], // Örnek veri (2020)
+				backgroundColor: 'rgba(60,141,188,0.9)',
+			},
+			{
+				label: '2021',
+				data: [15, 25, 35, 45, 55], // Örnek veri (2021)
+				backgroundColor: 'rgba(210, 214, 222, 1)',
+			}
+		]
+	};
+
+	// Başlangıçta ilk yılı (2020) gösterecek şekilde grafik
+	var barChartData = $.extend(true, {}, areaChartData);
+	var barChartOptions = {
+		responsive: true,
+		maintainAspectRatio: false,
+		datasetFill: false
+	};
+
+	// Grafik oluşturma
+	var barChart = new Chart(barChartCanvas, {
+		type: 'bar',
+		data: barChartData,
+		options: barChartOptions
+	});
+
+	// Yıl seçildiğinde grafiği güncelleme
+	$('#yearSelect').change(function () {
+		var selectedYear = $(this).val();
+
+		// Yıl verilerini dinamik olarak değiştirelim
+		if (selectedYear === '2020') {
+			barChartData.datasets[0].data = [10, 20, 30, 40, 50]; // 2020 verisi
+			barChartData.datasets[1].data = [15, 25, 35, 45, 55]; // 2021 verisi
+		} else if (selectedYear === '2021') {
+			barChartData.datasets[0].data = [15, 25, 35, 45, 55]; // 2021 verisi
+			barChartData.datasets[1].data = [20, 30, 40, 50, 60]; // 2022 verisi
+		} else if (selectedYear === '2022') {
+			barChartData.datasets[0].data = [20, 30, 40, 50, 60]; // 2022 verisi
+			barChartData.datasets[1].data = [25, 35, 45, 55, 65]; // 2023 verisi
+		} else {
+			barChartData.datasets[0].data = [25, 35, 45, 55, 65]; // 2023 verisi
+			barChartData.datasets[1].data = [30, 40, 50, 60, 70]; // 2024 verisi
+		}
+
+		// Grafiği güncelleme
+		barChart.update();
+	var barChartCanvas = $('#barChart').get(0).getContext('2d')
+	var barChartData = $.extend(true, {}, areaChartData)
+	var temp0 = areaChartData.datasets[0]
+	var temp1 = areaChartData.datasets[1]
+	barChartData.datasets[0] = temp1
+	barChartData.datasets[1] = temp0
+
+	var barChartOptions = {
+		responsive: true,
+		maintainAspectRatio: false,
+		datasetFill: false
+	}
+
+	new Chart(barChartCanvas, {
+		type: 'bar',
+		data: barChartData,
+		options: barChartOptions
+	})
+
+</script>
+
+
+ *@
+@model EntityLayer.Concrete.Transaction
+
+@{
+	ViewData["Title"] = "Bar Chart";
+	Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<div class="content-wrapper">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="form-group">
+						<label for="Year">Yıl Seç</label>
+						<select id="Year" name="Year" class="form-control" asp-items="ViewBag.yearValues">
+							<option value="">Seçiniz...</option>
+						</select>
+					</div>
+
+					<div class="card card-success">
+						<div class="card-header">
+							<h3 class="card-title">Yıllık Kar/Zarar Grafiği</h3>
+						</div>
+						<div class="card-body">
+							<canvas id="barChart" style="min-height:250px; height:250px; max-height:400px; max-width:100%;"></canvas>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+
+<script>
+	$(function () {
+		var ctx = $('#barChart').get(0).getContext('2d');
+		var barChart;
+		var labels = [
+			'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+			'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+		];
+
+		function loadChart(year) {
+			$.getJSON('/Chart/GetTransactionsByYear', { year: year }, function (res) {
+				var data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Gelir',
+							backgroundColor: 'rgba(60,141,188,0.9)',
+							borderColor: 'rgba(60,141,188,0.8)',
+							data: res.gelir
+						},
+						{
+							label: 'Gider',
+							backgroundColor: 'rgba(210, 214, 222, 1)',
+							borderColor: 'rgba(210, 214, 222, 1)',
+							data: res.gider
+						}
+					]
+				};
+
+				var options = {
+					responsive: true,
+					maintainAspectRatio: false,
+					datasetFill: false
+				};
+
+				if (barChart) barChart.destroy();
+
+				barChart = new Chart(ctx, {
+					type: 'bar',
+					data: data,
+					options: options
+				});
+			});
+		}
+
+		// Varsayılan yıl (Controller'dan ViewBag ile gönderebilirsin)
+		var defaultYear = '@ViewBag.defaultYear';
+		$('#Year').val(defaultYear);
+		loadChart(defaultYear);
+
+		// Seçim değişince grafiği güncelle
+		$('#Year').change(function () {
+			var selectedYear = $(this).val();
+			if (selectedYear) loadChart(selectedYear);
+		});
+	});
+
+
+</script>
