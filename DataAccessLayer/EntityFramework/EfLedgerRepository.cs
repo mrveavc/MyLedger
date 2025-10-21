@@ -30,5 +30,13 @@ namespace DataAccessLayer.EntityFramework
                 return ledgers;
             }
         }
+        public List<Ledger> GetListWithUser()
+        {
+            using (var c = new Context())
+            {
+                return  c.Ledgers.Include(x => x.User).ToList();
+
+            }
+        }
     }
 }

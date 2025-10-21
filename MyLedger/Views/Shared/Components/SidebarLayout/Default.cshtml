@@ -93,7 +93,7 @@
                     </li>
                 }
                 @* Sadece üye olduğu Ledger gösterilsin *@
-              @*  @if (ViewBag.LedgerMembership.Contains(3))  
+                @*  @if (ViewBag.LedgerMembership.Contains(3))  
                 {
                     <li class="nav-item">
                         <a href="/Ledger/Index" class="nav-link">
@@ -102,14 +102,25 @@
                         </a>
                     </li>
                 }*@
-                <li class="nav-item">
-                    <a href="/Bank/Index" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Bankalar
-                        </p>
-                    </a>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+                {
+                    <li class="nav-item">
+                        <a href="/Bank/Index" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Bankalar
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/LedgerMember/Index" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Üyeler
+                            </p>
+                        </a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a href="/Transaction/Index" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -118,18 +129,9 @@
                         </p>
                     </a>
                 </li>
-               @if (!(ViewBag.IsMember as bool? ?? false)){
-   
-
-                <li class="nav-item">
-                    <a href="/LedgerMember/Index" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Üyeler
-                        </p>
-                    </a>
-                </li>
-                    }
+              
+               
+                    
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -147,17 +149,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
+                            <a href="/Chart/ExpenseChart" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Harcama İstatistikleri</p> @*  (kategori bazlı: market, aidat, fatura…) *@
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="pages/charts/inline.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Grafikler</p> @* // (Pie / Line / Bar) *@
-                            </a>
-                        </li>
+                        
 
                     </ul>
                 </li>

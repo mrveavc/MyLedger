@@ -12,26 +12,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.EntityFramework
 {
-    public class EfTransactionRepository :GenericRepository<Transaction>, ITransactionDal
-    {
-        public List<Transaction> GetListWithBank(int id)
-        {
-            using (var c = new Context())
-            {
-                return c.Transactions.Include(b => b.Bank).Where(x => x.CreatedBy == id).ToList();
-            }
+	public class EfTransactionRepository : GenericRepository<Transaction>, ITransactionDal
+	{
+		public List<Transaction> GetListWithBank(int id)
+		{
+			using (var c = new Context())
+			{
+				return c.Transactions.Include(b => b.Bank).Where(x => x.CreatedBy == id).ToList();
+			}
 
-        }
+		}
 		public List<Transaction> GetListWithLedgerBank(int id)
-        {
-            using (var c = new Context())
-            {
-                return c.Transactions.Include(b => b.Bank).Include(c => c.Ledger).Where(x => x.CreatedBy == id).ToList();
-                //return c.Transactions.Include(c=>c.Ledger).Where(x => x.CreatedBy == id).ToList();
-            }
+		{
+			using (var c = new Context())
+			{
+				return c.Transactions.Include(b => b.Bank).Include(c => c.Ledger).Include(t => t.User).Where(x => x.CreatedBy == id).ToList();
+				//return c.Transactions.Include(c=>c.Ledger).Where(x => x.CreatedBy == id).ToList();
+			}
 
 
-        }
 
-    }
+
+
+		}
+		public List<Transaction> GetTransactionListWithUser()
+		{
+			using (var c = new Context())
+			{
+				var transactions = c.Transactions.Include(b => b.Bank).Include(c => c.Ledger).Include(t => t.User).ToList();
+
+				var distinctTransactions = transactions
+		   .GroupBy(t => t.User.Id)
+		   .Select(g => g.OrderByDescending(t => t.Year).FirstOrDefault())
+		   .OrderByDescending(t => t.Year)
+		   .ToList();
+
+				return distinctTransactions;
+
+			}
+		}
+	}
 }

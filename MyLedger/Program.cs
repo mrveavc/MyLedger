@@ -2,6 +2,7 @@ using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(x =>
     x.Password.RequireUppercase = false;
     x.Password.RequireNonAlphanumeric = false;
 
-}).AddEntityFrameworkStores<Context>();
+}).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders().AddRoles<AppRole>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc(config =>
 {
@@ -52,6 +53,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -60,8 +62,26 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+	endpoints.MapControllerRoute(
+		name: "areas",
+		pattern: "{area:exists}/{controller=AdminDashboard}/{action=Index}/{id?}");
+
+	endpoints.MapControllerRoute(
+		name: "default",
+		pattern: "{controller=Login}/{action=Index}/{id?}");
+});
+//app.MapControllerRoute(
+//	name: "areas",
+//	pattern: "{area:exists}/{controller=AdminDashboard}/{action=Index}/{id?}"
+//	);
+//app.MapControllerRoute(
+//	name: "default",
+//	pattern: "{controller=Login}/{action=Index}/{id?}"
+//	);
+
+
 
 app.Run();

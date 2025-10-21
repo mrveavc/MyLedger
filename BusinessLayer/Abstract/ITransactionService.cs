@@ -11,5 +11,6 @@ namespace BusinessLayer.Abstract
     {
         List<Transaction> GetTransactionListWithBank(int id);
         List<Transaction> GetTransactionListWithLedgerBank(int id);
+        List<Transaction> GetTransactionListWithUser();
     }
 }

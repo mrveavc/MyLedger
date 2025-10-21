@@ -12,5 +12,6 @@ namespace DataAccessLayer.Abstract
     {
         List<Transaction> GetListWithBank(int id);
         List<Transaction> GetListWithLedgerBank(int id);
+        List<Transaction> GetTransactionListWithUser();
     }
 }

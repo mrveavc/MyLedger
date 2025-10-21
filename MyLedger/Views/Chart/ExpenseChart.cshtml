@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewData["Title"] = "ExpenseChart";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                    <div class="col-md-12">
+                        @if (User.IsInRole("Member"))
+                        {
+                            @* Her defter için canvas burada oluşturulacak *@
+                            @foreach (var ledger in ViewBag.MemberLedgerExpenses as List<dynamic>)
+                            {
+                                <div class="card card-danger mb-3">
+                                    <div class="card-header">
+                                        <h3 class="card-title">@ledger.ledgerName</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="ledgerPieChart_@ledger.ledgerName.Replace(" ","_")" style="height:300px;"></canvas>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+                        {
+                            <canvas id="expensePieChart" style="height:400px; width:100%;"></canvas>
+                        }
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+       
+    </div>
+
+
+
+@section Scripts {
+	<script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+	<script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+	<script src="~/adminlte/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+{
+    <script>
+        // ViewBag'den CategoryList'i JSON formatında alıyoruz
+        var categoryList = @Html.Raw(Json.Serialize(ViewBag.CategoryList));
+
+        // Pie chart için veriyi hazırlıyoruz
+        var labels = categoryList.map(function (item) { return item.categoryname; });
+        var data = categoryList.map(function (item) { return item.percentage; });
+        var totals = categoryList.map(function (item) { return item.categorytotal; }); // Toplam tutarlar
+
+        var categoryColors = {
+           
+            // Expense
+            "Kira": "#f56954",
+            "Faturalar": "#ff6384",
+            "Gıda": "#36a2eb",
+            "Ulaşım": "#ffcd56",
+            "Sağlık": "#4bc0c0",
+            "Eğitim": "#9966ff",
+            "Giyim": "#c9cbcf",
+            "Eğlence": "#ff9f40",
+            "Borç": "#8e5ea2",
+            "Sigorta": "#3cba9f",
+            "Temizlik": "#e8c3b9"
+        };
+        // Her kategoriye uygun rengi eşleştir
+        var backgroundColors = categoryList.map(function (item) {
+            return categoryColors[item.categoryname] || "#999999"; // eşleşmezse gri
+        });
+
+        var ctx = document.getElementById('expensePieChart').getContext('2d');
+
+        var chart = new Chart(ctx, {
+            type: 'pie', // Pie chart
+            data: {
+                labels: labels, // Kategorilerin isimleri
+                datasets: [{
+                    label: 'Gider Kategorileri',
+                    data: data, // Yüzdeleri
+                    backgroundColor: backgroundColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                var index = context.dataIndex;
+                                var label = context.label || '';
+                                var total = totals[index] || 0;
+                                return label + ': ' + total.toFixed(2) + ' ₺ (' + data[index].toFixed(2) + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+       
+    </script>
+    }
+    @if (User.IsInRole("Member"))
+    {
+        <script>
+            $(function () {
+                var ledgerData = @Html.Raw(Json.Serialize(ViewBag.MemberLedgerExpenses));
+                var colors = ["#f56954", "#ff6384", "#36a2eb", "#ffcd56", "#4bc0c0", "#9966ff", "#c9cbcf", "#ff9f40", "#8e5ea2", "#3cba9f", "#e8c3b9"];
+
+                ledgerData.forEach(function (ledger) {
+                    var canvasId = 'ledgerPieChart_' + ledger.ledgerName.replace(/ /g, "_");
+                    var ctx = document.getElementById(canvasId).getContext('2d');
+
+                    var labels = ledger.categories.map(c => c.categoryname);
+                    var data = ledger.categories.map(c => c.categorytotal);
+                    var backgroundColors = ledger.categories.map((c, i) => colors[i % colors.length]);
+
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: { labels: labels, datasets: [{ label: ledger.ledgerName, data: data, backgroundColor: backgroundColors }] },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                title: { display: true, text: ledger.ledgerName },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            return context.label + ': ' + (context.raw || 0).toFixed(2) + ' ₺';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+
+}

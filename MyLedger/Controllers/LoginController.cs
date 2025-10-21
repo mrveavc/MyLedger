@@ -29,9 +29,20 @@ namespace MyLedger.Controllers
                 var result = await _signInManager.PasswordSignInAsync(p.username, p.password, false, true);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    if (User.IsInRole("Admin"))
+                    {
+						return RedirectToAction("Index", "Admin", new { area = "Admin" });
 
-                }
+
+					}
+                    else
+					{
+						return RedirectToAction("Index", "Dashboard");
+
+
+					}
+
+				}
                 else
                 {
                     return RedirectToAction("Index", "Login");

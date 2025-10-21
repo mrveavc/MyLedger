@@ -5,7 +5,9 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MyLedger.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MyLedger.Controllers
@@ -18,19 +20,45 @@ namespace MyLedger.Controllers
 
 		public IActionResult Index()
 		{
+			
 			var userName = User.Identity.Name;
 			var userId=c.Users.Where(x=>x.UserName==userName).Select(y=>y.Id).FirstOrDefault();
-			//var transaction = c.Transactions.Where(x => x.CreatedBy == userId).ToList();
-			var values = tm.GetTransactionListWithLedgerBank(userId);
-			var ownerName = c.Users
-				   .Where(x => x.Id == userId)
-				   .Select(x => x.FullName)
-				   .FirstOrDefault();
+            //var transaction = c.Transactions.Where(x => x.CreatedBy == userId).ToList();
+            if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+            {
+                 var values = tm.GetTransactionListWithLedgerBank(userId);
+			//	var ownerName = c.Users
+			//	   .Where(x => x.Id == userId)
+			//	   .Select(x => x.FullName)
+			//	   .FirstOrDefault();
 
-			ViewBag.OwnerName = ownerName;
+			//ViewBag.OwnerName = ownerName;
 			return View(values);
-		}
-		[HttpGet]
+            }
+            else if (User.IsInRole("Member"))
+            {
+                // Kullanıcının üye olduğu Ledger Id'lerini bul
+                var ledgerIds = c.LedgerMembers
+                    .Where(x => x.UserId == userId)
+                    .Select(x => x.LedgerId)
+                    .ToList();
+
+                // O Ledger'lara ait Transaction'ları getir
+                var transactions = c.Transactions
+                    .Include(t => t.Ledger)
+                    .Include(t => t.Bank)
+					.Include(t=>t.User)
+                    .Where(t => t.LedgerId.HasValue && ledgerIds.Contains(t.LedgerId.Value))
+                    .ToList();
+                // İstersen ViewBag ile isimleri aktarabilirsin
+                // Örn: ilk sahibin adını ViewBag’e
+              
+                return View(transactions);
+
+            }
+            return View(new List<Transaction>());
+        }
+        [HttpGet]
 		public IActionResult AddTransaction()
 		{
 			var username = User.Identity.Name;
@@ -77,11 +105,31 @@ namespace MyLedger.Controllers
 								   .ToList();
 
 			ViewBag.months = months;
+
+
+			var incomeCategories = Enum.GetValues(typeof(IncomeCategory))
+		.Cast<IncomeCategory>()
+		.Select(c => new { Value = c.ToString(), Text = c.ToString() })
+		.ToList();
+
+			var expenseCategories = Enum.GetValues(typeof(ExpenseCategory))
+				.Cast<ExpenseCategory>()
+				.Select(c => new { Value = c.ToString(), Text = c.ToString() })
+				.ToList();
+
+			ViewBag.IncomeCategoriesJson = JsonConvert.SerializeObject(incomeCategories);
+			ViewBag.ExpenseCategoriesJson = JsonConvert.SerializeObject(expenseCategories);
 			return View();
 		}
 		[HttpPost]
-		public IActionResult AddTransaction(Transaction p)
+		public IActionResult AddTransaction(Transaction p, string OtherCategory)
 		{
+			if(p.Category == "Diğer" && !string.IsNullOrWhiteSpace(OtherCategory))
+
+	{
+				// "Diğer" seçildiyse kullanıcıdan gelen değeri al
+				p.Category = OtherCategory;
+			}
 			tm.TAdd(p);
 			return RedirectToAction("Index", "Transaction");
 		}

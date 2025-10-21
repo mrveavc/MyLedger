@@ -1,0 +1,46 @@
+﻿@using EntityLayer.Concrete
+@model List<AppUser>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            var roleName = ViewBag.UserRoles[item.Id] ?? "Rol Yok";
+
+            <div class="col-lg-3">
+                <div class="contact-box center-version">
+
+                    <a href="profile.html">
+
+                        <img alt="image" class="rounded-circle" src="@item.ImageUrl">
+
+
+                        <h3 class="m-b-xs"><strong>@item.FullName </strong></h3>
+
+                        <div class="font-bold">@item.Email</div>
+                        <strong>@item.CreatedAt</strong><br>
+                        <span class="badge badge-info mt-2">Rol: @roleName</span>
+
+
+                    </a>
+                    <div class="contact-box-footer">
+                        <div class="m-t-xs btn-group">
+                            <a href="/Admin/User/DeleteUser/@item.Id" class="btn btn-xs btn-white"><i class="fa fa-phone"></i> Sil </a>
+                            <a href="/Admin/User/EditUser/@item.Id" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i> Düzenle</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</div>
+

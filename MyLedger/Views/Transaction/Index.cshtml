@@ -59,15 +59,20 @@
 												<td>@item.Description</td>
 												<td>@(new System.Globalization.CultureInfo("tr-TR").DateTimeFormat.GetMonthName(item.Month))</td>
 												<td>@item.Year</td>
-												<td>@ViewBag.OwnerName </td>
+												<td>@item.User.FullName</td>
 												<td>@item.CreatedAt.ToLongDateString()</td>
-												<td>
+												@if (!User.IsInRole("Member"))
+												{
+													<td>
 													<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#Sil_@item.Id">
 														Sil
 													</button>
 												</td>
 												<td><a href="/Transaction/EditTransaction/@item.Id" class="btn btn-danger">Düzenle</a></td>
+												}
+												
 											</tr>
+
 											<div class="modal fade" id="Sil_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 												<div class="modal-dialog modal-dialog-centered" role="document">
 													<div class="modal-content">
@@ -91,7 +96,10 @@
 								</table>
 
 							</div>
+							@if (!User.IsInRole("Member"))
+												{
 							<a href="/Transaction/AddTransaction/" class="btn btn-success">İşlem Oluştur</a>
+												}
 						</div>
 					</div>
 				</div>

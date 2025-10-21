@@ -52,5 +52,10 @@ namespace BusinessLayer.Concrete
 		{
             return _transactionDal.GetListWithLedgerBank(id);
 		}
-	}
+
+        public List<Transaction> GetTransactionListWithUser()
+        {
+            return _transactionDal.GetTransactionListWithUser();
+        }
+    }
 }

@@ -28,6 +28,11 @@ namespace BusinessLayer.Concrete
             return _ledgerDal.GetListWithLedger(id);
         }
 
+        public List<Ledger> GetListWithUserName()
+        {
+            return _ledgerDal.GetListWithUser();   
+        }
+
         public void TAdd(Ledger t)
         {
            _ledgerDal.Insert(t);

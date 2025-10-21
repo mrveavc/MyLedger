@@ -8,5 +8,9 @@ namespace MyLedger.Models
 
 		[Required]
 		public TransactionType Type { get; set; }  // Enum burada kullanılıyor
+		[Required]
+		public IncomeCategory? IncomeCategory { get; set; }
+		[Required]
+		public ExpenseCategory? ExpenseCategory { get; set; }
 	}
 }

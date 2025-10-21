@@ -1,0 +1,21 @@
+{
+  "name": "myledger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@coreui/chartjs": "^4.0.0",
+    "@coreui/utils": "^2.0.2",
+    "chart.js": "^4.5.0",
+    "simplebar": "^6.3.2"
+  },
+  "devDependencies": {
+    "sass": "^1.93.2"
+  }
+}

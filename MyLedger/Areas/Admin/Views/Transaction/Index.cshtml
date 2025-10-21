@@ -1,0 +1,122 @@
+﻿@using EntityLayer.Concrete
+@model List<Transaction>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <!-- Kullanıcı seçimi -->
+                    <div class="form-group">
+                        <label for="User">Kullanıcı Seç</label>
+                        <select id="User" name="User" class="form-control" asp-items="ViewBag.transactionValues">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+
+                    <!-- Yıl seçimi (başta gizli) -->
+                    <div class="form-group" id="yearContainer" style="display:none;">
+                        <label for="Year">Yıl Seç</label>
+                        <select id="Year" name="Year" class="form-control" asp-items="ViewBag.yearValues">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+
+                    <!-- Grafik (başta gizli) -->
+                    <div class="card card-success" id="chartContainer" style="display:none;">
+                        <div class="card-header">
+                            <h3 class="card-title">Yıllık Kar/Zarar Grafiği</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="barChart" style="min-height:250px; height:250px; max-height:400px; max-width:100%;"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+
+<script>
+    $(function () {
+        var ctx = $('#barChart').get(0).getContext('2d');
+        var barChart;
+        var labels = [
+            'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+            'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+        ];
+
+        // Grafik yükleme fonksiyonu
+        function loadChart(User, year) {
+            $.getJSON('/Admin/Transaction/GetTransactionsByYear', { year: year, User: User }, function (res) {
+                var data = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Gelir',
+                            backgroundColor: 'rgba(60,141,188,0.9)',
+                            borderColor: 'rgba(60,141,188,0.8)',
+                            data: res.gelir
+                        },
+                        {
+                            label: 'Gider',
+                            backgroundColor: 'rgba(210, 214, 222, 1)',
+                            borderColor: 'rgba(210, 214, 222, 1)',
+                            data: res.gider
+                        }
+                    ]
+                };
+
+                var options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                };
+
+                if (barChart) barChart.destroy();
+
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: options
+                });
+            });
+        }
+
+        // Kullanıcı seçildiğinde
+        $('#User').change(function () {
+            var selectedUser = $(this).val();
+            if (selectedUser) {
+                $('#yearContainer').slideDown();  // Yıl dropdown'ı göster
+                $('#chartContainer').hide();      // Grafiği gizle
+                $('#Year').val('');               // Önceki seçimleri sıfırla
+            } else {
+                $('#yearContainer').slideUp();
+                $('#chartContainer').slideUp();
+            }
+        });
+
+        // Yıl seçildiğinde
+        $('#Year').change(function () {
+            var selectedYear = $(this).val();
+            var selectedUser = $('#User').val();
+
+            if (selectedYear && selectedUser) {
+                $('#chartContainer').slideDown(); // Grafik alanını göster
+                loadChart(selectedUser, selectedYear);
+            } else {
+                $('#chartContainer').slideUp();
+            }
+        });
+    });
+</script>
